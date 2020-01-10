@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset=utf-8>
+  <meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0">
+  <title>强制横屏布局</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
+    h1 {
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+<div id="app">
+
+  <div style="padding:12px 20px">
+    <div style="width:80px;height:180px;border:1px solid blue;display:inline-block;">
+      水宝宝
+    </div>
+
+    <div style="width:400px;height:180px;border:1px solid black;display:inline-block;">
+      设置
+    </div>
+  </div>
+
+  <div style="padding:12px 20px">
+    <div style="width:80px;height:80px;border:1px solid blue;display:inline-block;">
+      项目1
+    </div>
+    <div style="width:80px;height:80px;border:1px solid blue;display:inline-block;">
+      项目2
+    </div>
+    <div style="width:80px;height:80px;border:1px solid blue;display:inline-block;">
+      项目3
+    </div>
+    <div style="width:80px;height:80px;border:1px solid blue;display:inline-block;">
+      项目4
+    </div>
+  </div>
+
+</div>
+
+<script>
+
+  function reset() {
+    let width = document.documentElement.clientWidth,
+      height = document.documentElement.clientHeight;
+    console.log('width', width);
+    console.log('height', height);
+    let eleApp = document.getElementById("app");
+    if (height > width) {
+      eleApp.style.width = height + 'px';
+      eleApp.style.height = width + 'px';
+      eleApp.style.webkitTransform = 'rotate(90deg)';
+      eleApp.style.webkitTransformOrigin = (width / 2) + 'px center';
+    } else {
+      eleApp.style.width = width + 'px';
+      eleApp.style.height = height + 'px';
+      eleApp.style.webkitTransform = 'rotate(0deg)';
+    }
+  }
+
+  reset();
+
+  let timer = null;
+  resetFn = function (e) {
+    clearTimeout(timer);
+    timer = setTimeout(reset, 100);
+  };
+
+  window.addEventListener('resize', resetFn, false);
+
+  if ("onorientationchange" in window) {
+    window.addEventListener('orientationchange', resetFn, false);
+  }
+
+</script>
+</body>
+</html>
