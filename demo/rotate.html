@@ -1,82 +1,161 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset=utf-8>
-  <meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0">
-  <title>强制横屏布局</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-    }
-    h1 {
-      margin: 0;
-    }
-  </style>
+    <meta charset=utf-8>
+    <meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0">
+    <title>强制横屏布局</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <style>
+        body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, input, textarea, p, blockquote, th, td {
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            margin: 0;
+        }
+
+        .items {
+            list-style: none;
+            /*width: 100%px;*/
+            height: 160px;
+            /*overflow: hidden;*/
+            overflow-x: scroll;
+            overflow-y: scroll;
+            white-space: nowrap; /* ul中的内容不换行 */
+        }
+
+        .items li {
+            width: 80px;
+            height: 80px;
+            border: 1px solid blue;
+            margin-top: 10px;
+            margin-left: 20px;
+            display: inline-block;
+        }
+    </style>
 </head>
 <body>
 <div id="app">
 
-  <div style="padding:12px 20px">
-    <div style="width:80px;height:180px;border:1px solid blue;display:inline-block;">
-      水宝宝
+    <div style="padding:12px 20px">
+        <div style="width:80px;height:180px;border:1px solid blue;display:inline-block;">
+            水宝宝
+        </div>
+
+        <div style="width:400px;height:180px;border:1px solid black;display:inline-block;">
+            设置
+        </div>
     </div>
 
-    <div style="width:400px;height:180px;border:1px solid black;display:inline-block;">
-      设置
-    </div>
-  </div>
-
-  <div style="padding:12px 20px">
-    <div style="width:80px;height:80px;border:1px solid blue;display:inline-block;">
-      项目1
-    </div>
-    <div style="width:80px;height:80px;border:1px solid blue;display:inline-block;">
-      项目2
-    </div>
-    <div style="width:80px;height:80px;border:1px solid blue;display:inline-block;">
-      项目3
-    </div>
-    <div style="width:80px;height:80px;border:1px solid blue;display:inline-block;">
-      项目4
-    </div>
-  </div>
+    <ul class="items">
+        <li>项目11</li>
+        <li>项目12</li>
+        <li>项目13</li>
+        <li>项目14</li>
+        <li>项目15</li>
+        <li>项目16</li>
+        <li>项目17</li>
+        <li>项目18</li>
+        <!--<br/>-->
+        <li>项目21</li>
+        <li>项目22</li>
+        <li>项目23</li>
+        <li>项目24</li>
+        <li>项目25</li>
+        <li>项目26</li>
+    </ul>
 
 </div>
 
 <script>
 
-  function reset() {
-    let width = document.documentElement.clientWidth,
-      height = document.documentElement.clientHeight;
-    console.log('width', width);
-    console.log('height', height);
-    let eleApp = document.getElementById("app");
-    if (height > width) {
-      eleApp.style.width = height + 'px';
-      eleApp.style.height = width + 'px';
-      eleApp.style.webkitTransform = 'rotate(90deg)';
-      eleApp.style.webkitTransformOrigin = (width / 2) + 'px center';
-    } else {
-      eleApp.style.width = width + 'px';
-      eleApp.style.height = height + 'px';
-      eleApp.style.webkitTransform = 'rotate(0deg)';
+    function reset() {
+        let width = document.documentElement.clientWidth,
+            height = document.documentElement.clientHeight;
+        console.log('width', width);
+        console.log('height', height);
+        let eleApp = document.getElementById("app");
+        if (height > width) {
+            eleApp.style.width = height + 'px';
+            eleApp.style.height = width + 'px';
+            eleApp.style.webkitTransform = 'rotate(90deg)';
+            eleApp.style.webkitTransformOrigin = (width / 2) + 'px center';
+        } else {
+            eleApp.style.width = width + 'px';
+            eleApp.style.height = height + 'px';
+            eleApp.style.webkitTransform = 'rotate(0deg)';
+        }
     }
-  }
 
-  reset();
+    reset();
 
-  let timer = null;
-  resetFn = function (e) {
-    clearTimeout(timer);
-    timer = setTimeout(reset, 100);
-  };
+    let timer = null;
+    resetFn = function (e) {
+        clearTimeout(timer);
+        timer = setTimeout(reset, 100);
+    };
 
-  window.addEventListener('resize', resetFn, false);
+    window.addEventListener('resize', resetFn, false);
 
-  if ("onorientationchange" in window) {
-    window.addEventListener('orientationchange', resetFn, false);
-  }
+    if ("onorientationchange" in window) {
+        window.addEventListener('orientationchange', resetFn, false);
+    }
+
+
+    var handler = function (e) {
+        var src = e.target;
+
+        // the first element that triggers this function becomes the active one, until it's done
+        if (!activeScroller) activeScroller = src.id;
+        else if (activeScroller != src.id) return;
+
+        /*
+        var $b = $("#bottom");
+        var $t = $("#top");
+
+        var scrollH = $("#bottom-content").height() - $b.height();
+        var scrollW = $("#top-content").width() - $t.width();
+
+        var scrollPct = 0;
+
+        if (src.id == "top") {
+            if (scrollW > 0) {
+                scrollPct = $t.scrollLeft() / scrollW;
+            }
+
+            $b.scrollTop(scrollH * scrollPct);
+        } else {
+            if (scrollH > 0) {
+                scrollPct = $b.scrollTop() / scrollH;
+            }
+
+            $t.scrollLeft(scrollW * scrollPct);
+        }
+        */
+        var $e = $(this);
+
+        var scrollHeight = $e[0].scrollHeight;
+        var scrollMaxTop = scrollHeight - $e.height();
+        console.log("scrollMaxTop", scrollMaxTop);
+
+        var scrollWidth = $e[0].scrollWidth;
+        var scrollMaxLeft = scrollWidth - $e.width();
+        console.log("scrollMaxLeft", scrollMaxLeft);
+
+//        console.log("scrollHeight", scrollHeight);
+//        console.log("$e.scrollTop()", $e.scrollTop());
+
+//        $e.scrollTop(scrollMaxTop * (scrollMaxLeft / $e.scrollLeft()));
+//        $e.scrollLeft(scrollMaxLeft * (scrollMaxTop / $e.scrollTop()));
+
+        // give all animations a chance to finish
+        setTimeout(function () {
+            activeScroller = "";
+        }, 100);
+    };
+    var activeScroller = "";
+    $(".items").on("scroll", handler);
 
 </script>
 </body>
